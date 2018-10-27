@@ -304,7 +304,7 @@ extension Color {
                      a: nA.clamp(min: 0, max: 1))
     }
 
-    public func mix(rgb color: Color) -> Color {
+    public func mixed(rgb color: Color) -> Color {
         let c = color.rgba
         return adding(red: c.red, green: c.green, blue: c.blue, alpha: c.alpha)
     }
@@ -325,7 +325,7 @@ extension Color {
                      alpha: nA.clamp(min: 0, max: 1))
     }
 
-    public func mix(hsv color: Color) -> Color {
+    public func mixed(hsv color: Color) -> Color {
         let hsva = color.hsva
         return adding(hue: hsva.hue,
                       saturation: hsva.saturation,
@@ -349,7 +349,7 @@ extension Color {
                      alpha: nA.clamp(min: 0, max: 1))
     }
 
-    public func mix(hsl color: Color) -> Color {
+    public func mixed(hsl color: Color) -> Color {
         let hsla = color.hsla
         return adding(hue: hsla.hue,
                       saturation: hsla.saturation,
