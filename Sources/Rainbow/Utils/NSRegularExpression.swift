@@ -1,10 +1,3 @@
-//
-//  NSRegularExpression.swift
-//  Rainbow
-//
-//  Created by Quentin Jin on 2018/10/26.
-//
-
 import Foundation
 
 extension NSRegularExpression {

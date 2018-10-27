@@ -1,10 +1,3 @@
-//
-//  Int.swift
-//  Rainbow
-//
-//  Created by Quentin MED on 2018/10/22.
-//
-
 import Foundation
 
 extension Int {

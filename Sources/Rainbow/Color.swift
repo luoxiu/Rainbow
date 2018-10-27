@@ -1,10 +1,3 @@
-//
-//  Color.swift
-//  Rainbow
-//
-//  Created by Quentin Jin on 2018/10/26.
-//
-
 import Foundation
 
 public struct Color {
@@ -57,7 +50,7 @@ public struct Color {
         case 5:
             self.init(r: v, g: p, b: q, a: a)
         default:
-            self.init(r: 0, g: 0, b: 0, a: 0)   // "Never"
+            self.init(r: 0, g: 0, b: 0, a: 0)
         }
     }
 
@@ -208,8 +201,12 @@ public struct Color {
     }
 }
 
-// MARK: - components
+// MARK: - Properties
 extension Color {
+
+    public var alpha: Double {
+        return a
+    }
 
     public var rgba: (red: Int, green: Int, blue: Int, alpha: Double) {
         return (red: Int(r * 255), green: Int(g * 255), blue: Int(b * 255), alpha: a)
@@ -274,6 +271,90 @@ extension Color {
             s = diff / (2 - 2 * l)
         }
         return (hue: h, saturation: s, lightness: l, alpha: a)
+    }
+
+    public var isDark: Bool {
+        return hsla.lightness >= 0.5
+    }
+
+    public var isLight: Bool {
+        return hsla.lightness >= 0.5
+    }
+
+    public var isBlack: Bool {
+        return r > 0.91 && g > 0.91 && b > 0.91
+    }
+
+    public var isWhite: Bool {
+        return r < 0.09 && g < 0.09 && b < 0.09
+    }
+}
+
+// MARK: - Methods
+extension Color {
+
+    public func adding(red: Int = 0, green: Int = 0, blue: Int = 0, alpha: Double = 0) -> Color {
+        let nR = r + Double(red) / 255
+        let nG = g + Double(green) / 255
+        let nB = b + Double(blue) / 255
+        let nA = a + a
+        return Color(r: nR.clamp(min: 0, max: 1),
+                     g: nG.clamp(min: 0, max: 1),
+                     b: nB.clamp(min: 0, max: 1),
+                     a: nA.clamp(min: 0, max: 1))
+    }
+
+    public func mix(rgb color: Color) -> Color {
+        let c = color.rgba
+        return adding(red: c.red, green: c.green, blue: c.blue, alpha: c.alpha)
+    }
+
+    public func adding(hue: Int, saturation: Double, value: Double, alpha: Double) -> Color {
+        let hsva = self.hsva
+
+        var nH = hsva.hue + hue
+        if nH < 0 { nH += 360 }
+        if nH > 360 { nH -= 360 }
+        let nS = hsva.saturation + saturation
+        let nV = hsva.value + value
+        let nA = hsva.alpha + alpha
+
+        return Color(hue: nH.clamp(min: 0, max: 360),
+                     saturation: nS.clamp(min: 0, max: 1),
+                     value: nV.clamp(min: 0, max: 1),
+                     alpha: nA.clamp(min: 0, max: 1))
+    }
+
+    public func mix(hsv color: Color) -> Color {
+        let hsva = color.hsva
+        return adding(hue: hsva.hue,
+                      saturation: hsva.saturation,
+                      value: hsva.value,
+                      alpha: hsva.alpha)
+    }
+
+    public func adding(hue: Int, saturation: Double, lightness: Double, alpha: Double) -> Color {
+        let hsla = self.hsla
+
+        var nH = hsla.hue + hue
+        if nH < 0 { nH += 360 }
+        if nH > 360 { nH -= 360 }
+        let nS = hsla.saturation + saturation
+        let nL = hsla.lightness + lightness
+        let nA = hsla.alpha + alpha
+
+        return Color(hue: nH.clamp(min: 0, max: 360),
+                     saturation: nS.clamp(min: 0, max: 1),
+                     lightness: nL.clamp(min: 0, max: 1),
+                     alpha: nA.clamp(min: 0, max: 1))
+    }
+
+    public func mix(hsl color: Color) -> Color {
+        let hsla = color.hsla
+        return adding(hue: hsla.hue,
+                      saturation: hsla.saturation,
+                      lightness: hsla.lightness,
+                      alpha: hsla.alpha)
     }
 }
 
