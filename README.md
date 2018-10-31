@@ -54,3 +54,10 @@ c1.adding(red: 10)
 c1.adding(hue: 1, saturation: 0.2, lightness: 0.3)
 c1.adding(hue: 1, saturation: 0.2, value: 0.3, alpha: 0.4)
 ```
+
+## Install
+
+dependencies: [
+    .package(url: "https://github.com/jianstm/Rainbow", .upToNextMajor(from: "0.0.1"))
+]
+
