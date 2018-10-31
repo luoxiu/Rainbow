@@ -57,7 +57,8 @@ c1.adding(hue: 1, saturation: 0.2, value: 0.3, alpha: 0.4)
 
 ## Install
 
+```swift
 dependencies: [
     .package(url: "https://github.com/jianstm/Rainbow", .upToNextMajor(from: "0.0.1"))
 ]
-
+```
