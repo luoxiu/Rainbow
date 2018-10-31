@@ -14,8 +14,13 @@ public struct Color {
         self.a = a
     }
 
-    /// Color(red: 3, green: 102, blue: 214)
-    /// Color(red: 3, green: 102, blue: 214, alpha: 0.5)
+    /// Creates a color using the specified opacity and RGB component values.
+    ///
+    ///     Color(red: 3, green: 102, blue: 214)
+    ///     Color(red: 3, green: 102, blue: 214, alpha: 0.5)
+    ///
+    /// `red`, `green` and `blue` will be clamped into 0...255; `alpha` will be
+    /// clamped into 0...1.
     public init(red: Int, green: Int, blue: Int, alpha: Double = 1) {
         r = Double(red).clamp(min: 0, max: 255) / 255
         g = Double(green).clamp(min: 0, max: 255) / 255
@@ -23,20 +28,26 @@ public struct Color {
         a = alpha.clamp(min: 0, max: 1)
     }
 
+    /// Creates a color using the specified opacity and HSV(HSB) component values.
+    ///
+    ///     Color(hue: 300, saturation: 0.2, value: 0.1)
+    ///     Color(hue: 300, saturation: 0.2, value: 0.1, alpha: 0.5)
+    ///
+    /// `hue` will be clamped into 0...360; `saturation`, `value` and `alpha`
+    /// will be clamped into 0...1.
     public init(hue: Int, saturation: Double, value: Double, alpha: Double) {
-        let h = Double(hue).clamp(min: 0, max: 360)
+        let h = Double(hue).clamp(min: 0, max: 360) / 360
         let s = saturation.clamp(min: 0, max: 1)
         let v = value.clamp(min: 0, max: 1)
         let a = alpha.clamp(min: 0, max: 1)
 
-        let hi = Int(fmod(floor(h / 60), 6))
-
-        let f = h / 60 - floor(h)
+        let i = floor(h * 6)
+        let f = h * 6 - i
         let p = v * (1 - s)
         let q = v * (1 - (s * f))
         let t = v * (1 - (s * (1 - f)))
 
-        switch (hi) {
+        switch fmod(i, 6) {
         case 0:
             self.init(r: v, g: t, b: p, a: a)
         case 1:
@@ -54,8 +65,15 @@ public struct Color {
         }
     }
 
+    /// Creates a color using the specified opacity and HSL component values.
+    ///
+    ///     Color(hue: 300, saturation: 0.2, lightness: 0.1)
+    ///     Color(hue: 300, saturation: 0.2, lightness: 0.1, alpha: 0.5)
+    ///
+    /// `hue` will be clamped into 0...360; `saturation`, `lightness` and `alpha`
+    /// will be clamped into 0...1.
     public init(hue: Int, saturation: Double, lightness: Double, alpha: Double) {
-        let h = Double(hue).clamp(min: 0, max: 360)
+        let h = Double(hue).clamp(min: 0, max: 360) / 360
         let s = saturation.clamp(min: 0, max: 1)
         let l = lightness.clamp(min: 0, max: 1)
         let a = alpha.clamp(min: 0, max: 1)
@@ -64,7 +82,6 @@ public struct Color {
             self.init(r: l, g: l, b: l, a: a)
             return
         }
-
         let hue2rgb = { (p: Double, q: Double, t: Double) -> Double in
             var tc = t
             if tc < 0 { tc += 1 }
@@ -84,10 +101,12 @@ public struct Color {
         self.init(r: r, g: g, b: b, a: a)
     }
 
-    /// "#0366d6"    "0366d6"
-    /// "#139"       "139"
-    /// "#0366d607"  "0366d607"
-    /// "#139f"      "139f"
+    /// Creates a color using the specified hexadecimal string.
+    ///
+    ///     "#0366d6"    "0366d6"
+    ///     "#139"       "139"
+    ///     "#0366d607"  "0366d607"
+    ///     "#139f"      "139f"
     public init?(hex s: String) {
         var hex = s.lowercased()
         if hex.hasPrefix("#") {
@@ -113,8 +132,12 @@ public struct Color {
         self.init(red: r, green: g, blue: b, alpha: a)
     }
 
-    /// "rgb(3, 102, 214)"
-    /// "rgba(3, 102, 214, 1)"
+    /// Creates a color using the specified rgba string.
+    ///
+    ///     let color = Color("rgb(3, 102, 214)")
+    ///     let color = Color("rgba(3, 102, 214, 1)")
+    ///
+    /// Same as `init?(rgba:)`.
     public init?(rgb s: String) {
         let pattern = "^rgba?\\((\\d+),\\s?(\\d+),\\s?(\\d+)(?:,\\s*((?:0\\.)?\\d+))?\\)$"
 
@@ -136,14 +159,22 @@ public struct Color {
         self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 
-    /// "rgb(3, 102, 214)"
-    /// "rgba(3, 102, 214, 1)"
+    /// Creates a color using the specified rgba string.
+    ///
+    ///     let color = Color("rgb(3, 102, 214)")
+    ///     let color = Color("rgba(3, 102, 214, 1)")
+    ///
+    /// Same as `init?(rgb:)`.
     public init?(rgba s: String) {
         self.init(rgb: s)
     }
 
-    /// "hsv(245, 100%, 25%)"
-    /// "hsva(245, 100%, 25%, 0.6)"
+    /// Creates a color using the specified hsva string.
+    ///
+    ///     let color = Color("hsv(245, 100%, 25%)")
+    ///     let color = Color("hsva(245, 100%, 25%, 0.6)")
+    ///
+    /// Same as `init?(hsva:)`.
     public init?(hsv s: String) {
         let pattern = "^hsva?\\((\\d+)(?:deg)?,\\s?(\\d+)%,\\s?(\\d+)%(?:,\\s*((?:0\\.)?\\d+))?\\)$"
 
@@ -165,14 +196,22 @@ public struct Color {
         self.init(hue: h, saturation: s, value: v, alpha: alpha)
     }
 
-    /// "hsv(245, 100%, 25%)"
-    /// "hsva(245, 100%, 25%, 0.6)"
+    /// Creates a color using the specified hsva string.
+    ///
+    ///     let color = Color("hsv(245, 100%, 25%)")
+    ///     let color = Color("hsva(245, 100%, 25%, 0.6)")
+    ///
+    /// Same as `init?(hsv:)`.
     public init?(hsva s: String) {
         self.init(hsv: s)
     }
 
-    /// "hsl(245, 100%, 25%)"
-    /// "hsla(245, 100%, 25%, 0.6)"
+    /// Creates a color using the specified hsla string.
+    ///
+    ///     let color = Color("hsl(245, 100%, 25%)")
+    ///     let color = Color("hsla(245, 100%, 25%, 0.6)")
+    ///
+    /// Same as `init?(hsla:)`.
     public init?(hsl s: String) {
         let pattern = "^hsla?\\((\\d+)(?:deg)?,\\s?(\\d+)%,\\s?(\\d+)%(?:,\\s*((?:0\\.)?\\d+))?\\)$"
 
@@ -194,8 +233,12 @@ public struct Color {
         self.init(hue: h, saturation: s, lightness: l, alpha: alpha)
     }
 
-    /// "hsl(245, 100%, 25%)"
-    /// "hsla(245, 100%, 25%, 0.6)"
+    /// Creates a color using the specified hsla string.
+    ///
+    ///     let color = Color("hsl(245, 100%, 25%)")
+    ///     let color = Color("hsla(245, 100%, 25%, 0.6)")
+    ///
+    /// Same as `init?(hsl:)`.
     public init?(hsla s: String) {
         self.init(hsl: s)
     }
@@ -217,60 +260,44 @@ extension Color {
         let min = Swift.min(r, g, b)
 
         let v = max
+        let d = max - min
+        let s = max == 0 ? 0 : d / max
 
-        var h = 0
+        var h = 0.0
 
-        let diff = max - min
-        if diff == 0 {
-            return (hue: 0, saturation: 0, value: 0, alpha: 0)
-        } else {
-            if max == r && g >= b {
-                h = Int((g - b) / diff * 60)
-            } else if max == r && g < b {
-                h = Int((g - b) / diff * 60) + 360
-            } else if max == g {
-                h = Int((b - r) / diff * 60) + 120
-            } else {
-                h = Int((r - g) / diff * 60) + 240
+        if d != 0 {
+            switch max {
+            case r:     h = (g - b) / d + (g < b ? 6 : 0)
+            case g:     h = (b - r) / d + 2
+            case b:     h = (r - g) / d + 4
+            default:    break
             }
+            h /= 6
         }
 
-        let s = max == 0 ? 0 : (diff / max)
-        return (hue: h, saturation: s, value: v, alpha: a)
+        return (hue: Int(h * 360), saturation: s, value: v, alpha: a)
     }
 
     public var hsla: (hue: Int, saturation: Double, lightness: Double, alpha: Double) {
         let max = Swift.max(r, g, b)
         let min = Swift.min(r, g, b)
 
+        let d = max - min
+
         let l = (max + min) / 2
-
-        var h = 0
-
-        let diff = max - min
-        if diff == 0 {
-            return (hue: 0, saturation: 0, lightness: 0, alpha: 0)
-        } else {
-            if max == r && g >= b {
-                h = Int((g - b) / diff * 60)
-            } else if max == r && g < b {
-                h = Int((g - b) / diff * 60) + 360
-            } else if max == g {
-                h = Int((b - r) / diff * 60) + 120
-            } else {
-                h = Int((r - g) / diff * 60) + 240
-            }
-        }
-
+        var h = 0.0
         var s = 0.0
-        if l == 0 || diff == 0 {
-            s = 0
-        } else if l > 0 && l <= 0.5 {
-            s = diff / l / 2
-        } else {
-            s = diff / (2 - 2 * l)
+        if d != 0 {
+            switch max {
+            case r:     h = (g - b) / d + (g < b ? 6 : 0)
+            case g:     h = (b - r) / d + 2
+            case b:     h = (r - g) / d + 4
+            default:    break
+            }
+            h *= 60
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
         }
-        return (hue: h, saturation: s, lightness: l, alpha: a)
+        return (hue: Int(h), saturation: s, lightness: l, alpha: a)
     }
 
     public var isDark: Bool {
@@ -370,8 +397,23 @@ extension Color: Hashable {
         return hasher.finalize()
     }
 
+    /// Returns a Boolean value that indicates whether two colors are the same.
     public static func == (lhs: Color, rhs: Color) -> Bool {
         return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a
+    }
+}
+
+
+infix operator ~~
+extension Color {
+    
+    /// Returns a Boolean value that indicates whether two colors are almost the same.
+    public static func ~~ (lhs: Color, rhs: Color) -> Bool {
+        let rd = (lhs.r - rhs.r) / 255
+        let gd = (lhs.g - rhs.g) / 255
+        let bd = (lhs.b - rhs.b) / 255
+        let ad = lhs.a - rhs.a
+        return (rd * rd + gd * gd + bd * bd + ad * ad) < 0.0001
     }
 }
 
