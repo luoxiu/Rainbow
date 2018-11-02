@@ -1,5 +1,7 @@
 import Foundation
 
+@_exported import Dispatch
+
 public struct Color {
 
     private let r: Double
@@ -131,6 +133,13 @@ public struct Color {
         let g = (n >> 8) & 0xff
         let b = n & 0xff
         self.init(red: r, green: g, blue: b, alpha: a)
+    }
+
+    public init(hex: Int) {
+        let r = (hex >> 16) & 0xff
+        let g = (hex >> 8) & 0xff
+        let b = hex & 0xff
+        self.init(red: r, green: g, blue: b)
     }
 
     /// Creates a color using the specified rgba string.
