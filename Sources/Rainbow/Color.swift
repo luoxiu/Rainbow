@@ -36,32 +36,25 @@ public struct Color {
     /// `hue` will be clamped into 0...360; `saturation`, `value` and `alpha`
     /// will be clamped into 0...1.
     public init(hue: Int, saturation: Double, value: Double, alpha: Double) {
-        let h = Double(hue).clamp(min: 0, max: 360) / 360
+        let h = Double(hue).clamp(min: 0, max: 360) / 60
         let s = saturation.clamp(min: 0, max: 1)
         let v = value.clamp(min: 0, max: 1)
         let a = alpha.clamp(min: 0, max: 1)
+        let hi = fmod(floor(h), 6)
 
-        let i = floor(h * 6)
-        let f = h * 6 - i
+        let f = h - floor(h)
         let p = v * (1 - s)
         let q = v * (1 - (s * f))
         let t = v * (1 - (s * (1 - f)))
 
-        switch fmod(i, 6) {
-        case 0:
-            self.init(r: v, g: t, b: p, a: a)
-        case 1:
-            self.init(r: q, g: v, b: p, a: a)
-        case 2:
-            self.init(r: p, g: v, b: t, a: a)
-        case 3:
-            self.init(r: p, g: q, b: v, a: a)
-        case 4:
-            self.init(r: t, g: p, b: v, a: a)
-        case 5:
-            self.init(r: v, g: p, b: q, a: a)
-        default:
-            self.init(r: 0, g: 0, b: 0, a: 0)
+        switch hi {
+        case 0:                 self.init(r: v, g: t, b: p, a: a)
+        case 1:                 self.init(r: q, g: v, b: p, a: a)
+        case 2:                 self.init(r: p, g: v, b: t, a: a)
+        case 3:                 self.init(r: p, g: q, b: v, a: a)
+        case 4:                 self.init(r: t, g: p, b: v, a: a)
+        case 5:                 self.init(r: v, g: p, b: q, a: a)
+        default:                self.init(r: 0, g: 0, b: 0, a: 0)
         }
     }
 
@@ -82,23 +75,31 @@ public struct Color {
             self.init(r: l, g: l, b: l, a: a)
             return
         }
-        let hue2rgb = { (p: Double, q: Double, t: Double) -> Double in
-            var tc = t
-            if tc < 0 { tc += 1 }
-            if tc > 1 { tc -= 1 }
-            if tc < 1 / 6 { return p + (q - p) * 6 * tc }
-            if tc < 1 / 2 { return q }
-            if tc < 2 / 3 { return p + (q - p) * (2 / 3 - tc) * 6 }
-            return p
+
+        let t2 = l < 0.5 ? (l + l * s) : (l + s - l * s)
+        let t1 = 2 * l - t2
+
+        var rgb = [0.0, 0.0, 0.0]
+
+        for i in 0..<3 {
+            var t3 = h - Double(i - 1) * 1 / 3
+            if t3 < 0 { t3 += 1 }
+            if t3 > 1 { t3 -= 1 }
+
+            var v = 0.0
+            if 6 * t3 < 1 {
+                v = t1 + (t2 - t1) * 6 * t3
+            } else if 2 * t3 < 1 {
+                v = t2
+            } else if 3 * t3 < 2 {
+                v = t1 + (t2 - t1) * (2 / 3 - t3) * 6
+            } else {
+                v = t1
+            }
+            rgb[i] = v
         }
 
-        let q = l < 0.5 ? (l + l * s) : (l + s - l * s)
-        let p = 2 * l - q
-
-        let r = hue2rgb(p, q, h + 1 / 3)
-        let g = hue2rgb(p, q, h)
-        let b = hue2rgb(p, q, h - 1 / 3)
-        self.init(r: r, g: g, b: b, a: a)
+        self.init(r: rgb[0], g: rgb[1], b: rgb[2], a: a)
     }
 
     /// Creates a color using the specified hexadecimal string.
@@ -261,18 +262,29 @@ extension Color {
 
         let v = max
         let d = max - min
-        let s = max == 0 ? 0 : d / max
 
         var h = 0.0
+        var s = 0.0
+
+        let dc = { (c: Double) in
+            return (v - c) / 6 / d + 0.5
+        }
 
         if d != 0 {
-            switch max {
-            case r:     h = (g - b) / d + (g < b ? 6 : 0)
-            case g:     h = (b - r) / d + 2
-            case b:     h = (r - g) / d + 4
-            default:    break
+            s = d / v
+            let rd = dc(r)
+            let gd = dc(g)
+            let bd = dc(b)
+
+            if r == v {
+                h = bd - gd
+            } else if (g == v) {
+                h = 1 / 3 + rd - bd
+            } else if (b == v) {
+                h = 2 / 3 + gd - rd
             }
-            h /= 6
+            if h < 0 { h += 1 }
+            if h > 1 { h -= 1 }
         }
 
         return (hue: Int(h * 360), saturation: s, value: v, alpha: a)
@@ -287,16 +299,22 @@ extension Color {
         let l = (max + min) / 2
         var h = 0.0
         var s = 0.0
-        if d != 0 {
-            switch max {
-            case r:     h = (g - b) / d + (g < b ? 6 : 0)
-            case g:     h = (b - r) / d + 2
-            case b:     h = (r - g) / d + 4
-            default:    break
-            }
-            h *= 60
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+        if r == max {
+            h = (g - b) / d
+        } else if g == max {
+            h = 2 + (b - r) / d
+        } else if b == max {
+            h = 4 + (r - g) / d
         }
+
+        h = Swift.min(h * 60, 360)
+        if h < 0 { h += 360 }
+
+        if d != 0 {
+            s = l <= 0.5 ? d / (max + min) : d / (2 - max - min)
+        }
+
         return (hue: Int(h), saturation: s, lightness: l, alpha: a)
     }
 
@@ -314,6 +332,22 @@ extension Color {
 
     public var isWhite: Bool {
         return r < 0.09 && g < 0.09 && b < 0.09
+    }
+
+    public var ansi256: Int {
+        if r == g && g == b {
+            let red = r * 255
+            if red < 8 { return 16 }
+            if red > 248 { return 231 }
+
+            return Int(round((red - 8) / 247 * 24) + 232)
+        }
+
+        let v0 = 16.0
+        let v1 = 36 * round(r * 5)
+        let v2 = 6 * round(g * 5)
+        let v3 = round(b * 5)
+        return Int(v0 + v1 + v2 + v3)
     }
 }
 
@@ -339,9 +373,7 @@ extension Color {
     public func adding(hue: Int, saturation: Double, value: Double, alpha: Double) -> Color {
         let hsva = self.hsva
 
-        var nH = hsva.hue + hue
-        if nH < 0 { nH += 360 }
-        if nH > 360 { nH -= 360 }
+        let nH = hsva.hue + hue
         let nS = hsva.saturation + saturation
         let nV = hsva.value + value
         let nA = hsva.alpha + alpha
@@ -363,9 +395,7 @@ extension Color {
     public func adding(hue: Int, saturation: Double, lightness: Double, alpha: Double) -> Color {
         let hsla = self.hsla
 
-        var nH = hsla.hue + hue
-        if nH < 0 { nH += 360 }
-        if nH > 360 { nH -= 360 }
+        let nH = hsla.hue + hue
         let nS = hsla.saturation + saturation
         let nL = hsla.lightness + lightness
         let nA = hsla.alpha + alpha
