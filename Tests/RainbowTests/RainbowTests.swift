@@ -37,6 +37,10 @@ final class RainbowTests: XCTestCase {
         XCTAssert(rgba.green ~~ 201)
         XCTAssert(rgba.blue ~~ 100)
         XCTAssert(rgba.alpha ~~ 0.3)
+
+        let other = Color(hsl: "hsl(96, 48%, 59%, 0.3)")
+        XCTAssertNotNil(other)
+        XCTAssert(color ~~ other!)
     }
 
     func testHSVAColor() {
@@ -52,6 +56,10 @@ final class RainbowTests: XCTestCase {
         XCTAssert(rgba.green ~~ 199)
         XCTAssert(rgba.blue ~~ 99)
         XCTAssert(rgba.alpha ~~ 0.3)
+
+        let other = Color(hsv: "hsv(96, 50%, 78%, 0.3)")
+        XCTAssertNotNil(other)
+        XCTAssert(color ~~ other!)
     }
 
     func testHexColor() {
@@ -66,6 +74,8 @@ final class RainbowTests: XCTestCase {
 
         let color5 = Color(hex: "hello")
         XCTAssertNil(color5)
+
+        XCTAssert(Color(hex: 0x0366D6) == Color(hex: "#0366D6"))
     }
 
     static var allTests = [

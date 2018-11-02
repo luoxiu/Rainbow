@@ -135,6 +135,9 @@ public struct Color {
         self.init(red: r, green: g, blue: b, alpha: a)
     }
 
+    /// Creates a color using the specified hexadecimal value.
+    ///
+    ///     let color = Color(hex: 0x0366D6)
     public init(hex: Int) {
         let r = (hex >> 16) & 0xff
         let g = (hex >> 8) & 0xff
@@ -203,7 +206,7 @@ public struct Color {
             alpha = 1
         }
 
-        self.init(hue: h, saturation: s, value: v, alpha: alpha)
+        self.init(hue: h, saturation: s / 100, value: v / 100, alpha: alpha)
     }
 
     /// Creates a color using the specified hsva string.
@@ -240,7 +243,7 @@ public struct Color {
             alpha = 1
         }
 
-        self.init(hue: h, saturation: s, lightness: l, alpha: alpha)
+        self.init(hue: h, saturation: s / 100, lightness: l / 100, alpha: alpha)
     }
 
     /// Creates a color using the specified hsla string.
