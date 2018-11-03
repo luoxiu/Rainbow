@@ -1,6 +1,12 @@
 # Rainbow
 
-Color conversion and manipulation library for Swift, with no dependence on UIKit/AppKit
+<a href="https://travis-ci.org/jianstm/Rainbow">
+  <img src="https://travis-ci.org/jianstm/Rainbow.svg?branch=master">
+</a>
+<br>
+<div align="center">
+    <strong>Color conversion and manipulation library for Swift, with no dependence on UIKit/AppKit.</strong>
+</div>
 
 ## API
 
