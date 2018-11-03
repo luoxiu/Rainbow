@@ -80,6 +80,17 @@ final class RainbowTests: XCTestCase {
         XCTAssert(Color(hex: 0x0366D6) == Color(hex: "#0366D6"))
     }
 
+    func testANSI() {
+        let color1 = Color(red: 170, green: 0, blue: 0)
+        XCTAssert(color1.ansi16 == 31)
+
+        let color2 = Color(red: 85, green: 85, blue: 255)
+        XCTAssert(color2.ansi16 == 94)
+
+        let color3 = Color(hex: "d700ff")
+        XCTAssert(color3?.ansi256 == 165)
+    }
+
     static var allTests = [
         ("testRGBAColor", testRGBAColor),
         ("testHSLAColor", testHSLAColor),

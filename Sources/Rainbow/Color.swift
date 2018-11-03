@@ -92,7 +92,7 @@ public struct Color {
             } else if 2 * t3 < 1 {
                 v = t2
             } else if 3 * t3 < 2 {
-                v = t1 + (t2 - t1) * (2 / 3 - t3) * 6
+                v = t1 + (t2 - t1) * (2.0 / 3 - t3) * 6
             } else {
                 v = t1
             }
@@ -305,9 +305,9 @@ extension Color {
             if r == v {
                 h = bd - gd
             } else if (g == v) {
-                h = 1 / 3 + rd - bd
+                h = 1.0 / 3 + rd - bd
             } else if (b == v) {
-                h = 2 / 3 + gd - rd
+                h = 2.0 / 3 + gd - rd
             }
             if h < 0 { h += 1 }
             if h > 1 { h -= 1 }
@@ -367,34 +367,44 @@ extension Color {
         return r < 0.09 && g < 0.09 && b < 0.09
     }
 
-    public var ansi256: Int {
+    /// Roughly
+    public var ansi256: UInt8 {
         if r == g && g == b {
             let red = r * 255
             if red < 8 { return 16 }
             if red > 248 { return 231 }
 
-            return Int(round((red - 8) / 247 * 24) + 232)
+            return UInt8(round((red - 8) / 247 * 24) + 232)
         }
 
         let v0 = 16.0
         let v1 = 36 * round(r * 5)
         let v2 = 6 * round(g * 5)
         let v3 = round(b * 5)
-        return Int(v0 + v1 + v2 + v3)
+
+        return UInt8(v0 + v1 + v2 + v3)
     }
 
-    public var ansi16: Int {
-        let v = self.hsva.value / 50
+    /// Roughly
+    public var ansi16: UInt8 {
+        let v = round(Double(self.hsva.value) / 50)
 
         if v == 0 {
             return 30
         }
 
-        let i0 = 30
-        let i1 = Int(round(b)) << 2
-        let i2 = Int(round(g)) << 1
-        let i3 = Int(round(r))
-        return i0 + i1 | i2 | i3
+        let i0: UInt8 = 30
+        let i1 = UInt8(round(b)) << 2
+        let i2 = UInt8(round(g)) << 1
+        let i3 = UInt8(round(r))
+
+        var c = i0 + i1 | i2 | i3
+
+        if v == 2 {
+            c += 60
+        }
+
+        return c
     }
 }
 
