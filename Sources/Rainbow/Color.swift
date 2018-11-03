@@ -1,7 +1,5 @@
 import Foundation
 
-@_exported import Dispatch
-
 public struct Color {
 
     private let r: Double
@@ -366,28 +364,26 @@ extension Color {
 // MARK: - Methods
 extension Color {
 
-    public func adding(red: Int = 0, green: Int = 0, blue: Int = 0, alpha: Double = 0) -> Color {
-        let nR = r + Double(red) / 255
-        let nG = g + Double(green) / 255
-        let nB = b + Double(blue) / 255
-        let nA = a + a
+    public func mixed(rgb color: Color) -> Color {
+        let rgba = color.rgba
+
+        let nR = r + Double(rgba.red) / 255
+        let nG = g + Double(rgba.green) / 255
+        let nB = b + Double(rgba.blue) / 255
+        let nA = a + rgba.alpha
         return Color(r: nR.clamp(min: 0, max: 1),
                      g: nG.clamp(min: 0, max: 1),
                      b: nB.clamp(min: 0, max: 1),
                      a: nA.clamp(min: 0, max: 1))
     }
 
-    public func mixed(rgb color: Color) -> Color {
-        let c = color.rgba
-        return adding(red: c.red, green: c.green, blue: c.blue, alpha: c.alpha)
-    }
+    public func mixed(hsv color: Color) -> Color {
+        let hsva = color.hsva
+        let this = self.hsva
 
-    public func adding(hue: Int, saturation: Double, value: Double, alpha: Double) -> Color {
-        let hsva = self.hsva
-
-        let nH = hsva.hue + hue
-        let nS = hsva.saturation + saturation
-        let nV = hsva.value + value
+        let nH = hsva.hue + this.hue
+        let nS = hsva.saturation + this.saturation
+        let nV = hsva.value + this.value
         let nA = hsva.alpha + alpha
 
         return Color(hue: nH.clamp(min: 0, max: 360),
@@ -396,34 +392,19 @@ extension Color {
                      alpha: nA.clamp(min: 0, max: 1))
     }
 
-    public func mixed(hsv color: Color) -> Color {
-        let hsva = color.hsva
-        return adding(hue: hsva.hue,
-                      saturation: hsva.saturation,
-                      value: hsva.value,
-                      alpha: hsva.alpha)
-    }
+    public func mixed(hsl color: Color) -> Color {
+        let hsla = color.hsla
+        let this = self.hsla
 
-    public func adding(hue: Int, saturation: Double, lightness: Double, alpha: Double) -> Color {
-        let hsla = self.hsla
-
-        let nH = hsla.hue + hue
-        let nS = hsla.saturation + saturation
-        let nL = hsla.lightness + lightness
+        let nH = hsla.hue + this.hue
+        let nS = hsla.saturation + this.saturation
+        let nL = hsla.lightness + this.lightness
         let nA = hsla.alpha + alpha
 
         return Color(hue: nH.clamp(min: 0, max: 360),
                      saturation: nS.clamp(min: 0, max: 1),
                      lightness: nL.clamp(min: 0, max: 1),
                      alpha: nA.clamp(min: 0, max: 1))
-    }
-
-    public func mixed(hsl color: Color) -> Color {
-        let hsla = color.hsla
-        return adding(hue: hsla.hue,
-                      saturation: hsla.saturation,
-                      lightness: hsla.lightness,
-                      alpha: hsla.alpha)
     }
 }
 
