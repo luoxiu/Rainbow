@@ -345,11 +345,18 @@ extension Color {
     }
 
     public var isDark: Bool {
-        return hsla.lightness >= 50
+        let rgba = self.rgba
+        let yiq = Double(rgba.red * 299 + rgba.green * 587 + rgba.blue * 114) / 1000
+        return yiq < 218
     }
 
     public var isLight: Bool {
-        return hsla.lightness >= 50
+        return !isDark
+    }
+
+    public var negate: Color {
+        let rgba = self.rgba
+        return Color(red: 255 - rgba.red, green: 255 - rgba.green, blue: 255 - rgba.blue)
     }
 
     public var isBlack: Bool {
@@ -395,40 +402,14 @@ extension Color {
 extension Color {
 
     public func mixed(rgb color: Color) -> Color {
-        let rgba = color.rgba
+        let a = self.a - color.a
+        let w1 = (a + 1) / 2
+        let w2 = 1 - w1
 
-        let nR = r + Double(rgba.red) / 255
-        let nG = g + Double(rgba.green) / 255
-        let nB = b + Double(rgba.blue) / 255
-        let nA = a + rgba.alpha
-        return Color(r: nR.clamp(min: 0, max: 1),
-                     g: nG.clamp(min: 0, max: 1),
-                     b: nB.clamp(min: 0, max: 1),
-                     a: nA.clamp(min: 0, max: 1))
-    }
-
-    public func mixed(hsv color: Color) -> Color {
-        let hsva = color.hsva
-        let this = self.hsva
-
-        let nH = hsva.hue + this.hue
-        let nS = hsva.saturation + this.saturation
-        let nV = hsva.value + this.value
-        let nA = hsva.alpha + alpha
-
-        return Color(hue: nH, saturation: nS, value: nV, alpha: nA)
-    }
-
-    public func mixed(hsl color: Color) -> Color {
-        let hsla = color.hsla
-        let this = self.hsla
-
-        let nH = hsla.hue + this.hue
-        let nS = hsla.saturation + this.saturation
-        let nL = hsla.lightness + this.lightness
-        let nA = hsla.alpha + alpha
-
-        return Color(hue: nH, saturation: nS, lightness: nL, alpha: nA)
+        return Color(r: w1 * r + w2 * color.r,
+                     g: w1 * g + w2 * color.g,
+                     b: w1 * b + w2 * color.b,
+                     a: (a + color.a) * 0.5)
     }
 }
 
