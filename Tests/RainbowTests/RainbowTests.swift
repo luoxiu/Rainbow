@@ -1,6 +1,7 @@
 import XCTest
 @testable import Rainbow
 
+infix operator ~~
 private func ~~(lhs: Double, rhs: Double) -> Bool {
     return Swift.max(lhs, rhs) - Swift.min(lhs, rhs) < 0.0001
 }
@@ -40,7 +41,7 @@ final class RainbowTests: XCTestCase {
 
         let other = Color(hsl: "hsl(96, 48%, 59%, 0.3)")
         XCTAssertNotNil(other)
-        XCTAssert(color ~~ other!)
+        XCTAssert(color == other!)
     }
 
     func testHSVAColor() {
@@ -59,7 +60,7 @@ final class RainbowTests: XCTestCase {
 
         let other = Color(hsv: "hsv(96, 50%, 78%, 0.3)")
         XCTAssertNotNil(other)
-        XCTAssert(color ~~ other!)
+        XCTAssert(color == other!)
     }
 
     func testHexColor() {
@@ -70,7 +71,7 @@ final class RainbowTests: XCTestCase {
         let color3 = Color(red: 170, green: 187, blue: 204)
         let color4 = Color(hex: "abc")
         XCTAssertNotNil(color4)
-        XCTAssert(color3 ~~ color4!)
+        XCTAssert(color3 == color4!)
 
         let color5 = Color(hex: "hello")
         XCTAssertNil(color5)

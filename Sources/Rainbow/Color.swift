@@ -426,20 +426,6 @@ extension Color: Hashable {
     }
 }
 
-
-infix operator ~~
-extension Color {
-    
-    /// Returns a Boolean value that indicates whether two colors are almost the same.
-    public static func ~~ (lhs: Color, rhs: Color) -> Bool {
-        let rd = (lhs.r - rhs.r) / 255
-        let gd = (lhs.g - rhs.g) / 255
-        let bd = (lhs.b - rhs.b) / 255
-        let ad = lhs.a - rhs.a
-        return (rd * rd + gd * gd + bd * bd + ad * ad) < 0.0001
-    }
-}
-
 // MARK: - Misc
 extension Color {
 
