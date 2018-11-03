@@ -30,15 +30,15 @@ public struct Color {
 
     /// Creates a color using the specified opacity and HSV(HSB) component values.
     ///
-    ///     Color(hue: 300, saturation: 0.2, value: 0.1)
-    ///     Color(hue: 300, saturation: 0.2, value: 0.1, alpha: 0.5)
+    ///     Color(hue: 300, saturation: 20, value: 10)
+    ///     Color(hue: 300, saturation: 20, value: 10, alpha: 0.5)
     ///
-    /// `hue` will be clamped into 0...360; `saturation`, `value` and `alpha`
-    /// will be clamped into 0...1.
-    public init(hue: Int, saturation: Double, value: Double, alpha: Double) {
+    /// `hue` will be clamped into 0...360; `saturation` and `value` will be
+    /// clamped into 1...100, `alpha` will be clamped into 0...1.
+    public init(hue: Int, saturation: Int, value: Int, alpha: Double) {
         let h = Double(hue).clamp(min: 0, max: 360) / 60
-        let s = saturation.clamp(min: 0, max: 1)
-        let v = value.clamp(min: 0, max: 1)
+        let s = Double(saturation).clamp(min: 0, max: 100) / 100
+        let v = Double(value).clamp(min: 0, max: 100) / 100
         let a = alpha.clamp(min: 0, max: 1)
         let hi = fmod(floor(h), 6)
 
@@ -60,15 +60,15 @@ public struct Color {
 
     /// Creates a color using the specified opacity and HSL component values.
     ///
-    ///     Color(hue: 300, saturation: 0.2, lightness: 0.1)
-    ///     Color(hue: 300, saturation: 0.2, lightness: 0.1, alpha: 0.5)
+    ///     Color(hue: 300, saturation: 20, lightness: 10)
+    ///     Color(hue: 300, saturation: 20, lightness: 10, alpha: 0.5)
     ///
-    /// `hue` will be clamped into 0...360; `saturation`, `lightness` and `alpha`
-    /// will be clamped into 0...1.
-    public init(hue: Int, saturation: Double, lightness: Double, alpha: Double) {
+    /// `hue` will be clamped into 0...360; `saturation`and `lightness` will be
+    /// clamped into 1...100, `alpha` will be clamped into 0...1.
+    public init(hue: Int, saturation: Int, lightness: Int, alpha: Double) {
         let h = Double(hue).clamp(min: 0, max: 360) / 360
-        let s = saturation.clamp(min: 0, max: 1)
-        let l = lightness.clamp(min: 0, max: 1)
+        let s = Double(saturation).clamp(min: 0, max: 100) / 100
+        let l = Double(lightness).clamp(min: 0, max: 100) / 100
         let a = alpha.clamp(min: 0, max: 1)
 
         if (s == 0) {
@@ -192,8 +192,8 @@ public struct Color {
         let captures = NSRegularExpression.match(s, pattern: pattern)
         guard captures.count >= 4,
             let h = Int(captures[1]),
-            let s = Double(captures[2]),
-            let v = Double(captures[3]) else {
+            let s = Int(captures[2]),
+            let v = Int(captures[3]) else {
                 return nil
         }
 
@@ -204,7 +204,7 @@ public struct Color {
             alpha = 1
         }
 
-        self.init(hue: h, saturation: s / 100, value: v / 100, alpha: alpha)
+        self.init(hue: h, saturation: s, value: v, alpha: alpha)
     }
 
     /// Creates a color using the specified hsva string.
@@ -229,8 +229,8 @@ public struct Color {
         let captures = NSRegularExpression.match(s, pattern: pattern)
         guard captures.count >= 4,
             let h = Int(captures[1]),
-            let s = Double(captures[2]),
-            let l = Double(captures[3]) else {
+            let s = Int(captures[2]),
+            let l = Int(captures[3]) else {
                 return nil
         }
 
@@ -241,7 +241,7 @@ public struct Color {
             alpha = 1
         }
 
-        self.init(hue: h, saturation: s / 100, lightness: l / 100, alpha: alpha)
+        self.init(hue: h, saturation: s, lightness: l, alpha: alpha)
     }
 
     /// Creates a color using the specified hsla string.
@@ -266,7 +266,7 @@ extension Color {
         return (red: Int(r * 255), green: Int(g * 255), blue: Int(b * 255), alpha: a)
     }
 
-    public var hsva: (hue: Int, saturation: Double, value: Double, alpha: Double) {
+    public var hsva: (hue: Int, saturation: Int, value: Int, alpha: Double) {
         let max = Swift.max(r, g, b)
         let min = Swift.min(r, g, b)
 
@@ -297,10 +297,10 @@ extension Color {
             if h > 1 { h -= 1 }
         }
 
-        return (hue: Int(h * 360), saturation: s, value: v, alpha: a)
+        return (hue: Int(h * 360), saturation: Int(s * 100), value: Int(v * 100), alpha: a)
     }
 
-    public var hsla: (hue: Int, saturation: Double, lightness: Double, alpha: Double) {
+    public var hsla: (hue: Int, saturation: Int, lightness: Int, alpha: Double) {
         let max = Swift.max(r, g, b)
         let min = Swift.min(r, g, b)
 
@@ -325,15 +325,15 @@ extension Color {
             s = l <= 0.5 ? d / (max + min) : d / (2 - max - min)
         }
 
-        return (hue: Int(h), saturation: s, lightness: l, alpha: a)
+        return (hue: Int(h), saturation: Int(s * 100), lightness: Int(l * 100), alpha: a)
     }
 
     public var isDark: Bool {
-        return hsla.lightness >= 0.5
+        return hsla.lightness >= 50
     }
 
     public var isLight: Bool {
-        return hsla.lightness >= 0.5
+        return hsla.lightness >= 50
     }
 
     public var isBlack: Bool {
@@ -358,6 +358,20 @@ extension Color {
         let v2 = 6 * round(g * 5)
         let v3 = round(b * 5)
         return Int(v0 + v1 + v2 + v3)
+    }
+
+    public var ansi16: Int {
+        let v = self.hsva.value / 50
+
+        if v == 0 {
+            return 30
+        }
+
+        let i0 = 30
+        let i1 = Int(round(b)) << 2
+        let i2 = Int(round(g)) << 1
+        let i3 = Int(round(r))
+        return i0 + i1 | i2 | i3
     }
 }
 
@@ -386,10 +400,7 @@ extension Color {
         let nV = hsva.value + this.value
         let nA = hsva.alpha + alpha
 
-        return Color(hue: nH.clamp(min: 0, max: 360),
-                     saturation: nS.clamp(min: 0, max: 1),
-                     value: nV.clamp(min: 0, max: 1),
-                     alpha: nA.clamp(min: 0, max: 1))
+        return Color(hue: nH, saturation: nS, value: nV, alpha: nA)
     }
 
     public func mixed(hsl color: Color) -> Color {
@@ -401,12 +412,10 @@ extension Color {
         let nL = hsla.lightness + this.lightness
         let nA = hsla.alpha + alpha
 
-        return Color(hue: nH.clamp(min: 0, max: 360),
-                     saturation: nS.clamp(min: 0, max: 1),
-                     lightness: nL.clamp(min: 0, max: 1),
-                     alpha: nA.clamp(min: 0, max: 1))
+        return Color(hue: nH, saturation: nS, lightness: nL, alpha: nA)
     }
 }
+
 
 // MARK: - Hashable & Equatable
 extension Color: Hashable {

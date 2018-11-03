@@ -26,11 +26,12 @@ final class RainbowTests: XCTestCase {
     }
     
     func testHSLAColor() {
-        let color = Color(hue: 96, saturation: 0.48, lightness: 0.59, alpha: 0.3)
+        let color = Color(hue: 96, saturation: 48, lightness: 59, alpha: 0.3)
         let hsla = color.hsla
+        print(hsla)
         XCTAssert(hsla.hue ~~ 96)
-        XCTAssert(hsla.saturation ~~ 0.48)
-        XCTAssert(hsla.lightness ~~ 0.59)
+        XCTAssert(hsla.saturation ~~ 48)
+        XCTAssert(hsla.lightness ~~ 59)
         XCTAssert(hsla.alpha ~~ 0.3)
 
         let rgba = color.rgba
@@ -45,11 +46,11 @@ final class RainbowTests: XCTestCase {
     }
 
     func testHSVAColor() {
-        let color = Color(hue: 96, saturation: 0.50, value: 0.78, alpha: 0.3)
+        let color = Color(hue: 96, saturation: 50, value: 78, alpha: 0.3)
         let hsva = color.hsva
         XCTAssert(hsva.hue ~~ 96)
-        XCTAssert(hsva.saturation ~~ 0.50)
-        XCTAssert(hsva.value ~~ 0.78)
+        XCTAssert(hsva.saturation ~~ 50)
+        XCTAssert(hsva.value ~~ 78)
         XCTAssert(hsva.alpha ~~ 0.3)
 
         let rgba = color.rgba
