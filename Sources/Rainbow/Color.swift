@@ -160,11 +160,9 @@ public struct Color {
                 return nil
         }
 
-        var alpha = 0.0
+        var alpha = 1.0
         if captures.count > 4, let a = Double(captures[4]) {
             alpha = a
-        } else {
-            alpha = 1
         }
 
         self.init(red: r, green: g, blue: b, alpha: alpha)
@@ -197,11 +195,9 @@ public struct Color {
                 return nil
         }
 
-        var alpha = 0.0
+        var alpha = 1.0
         if captures.count > 4, let a = Double(captures[4]) {
             alpha = a
-        } else {
-            alpha = 1
         }
 
         self.init(hue: h, saturation: s, value: v, alpha: alpha)
@@ -234,11 +230,9 @@ public struct Color {
                 return nil
         }
 
-        var alpha = 0.0
+        var alpha = 1.0
         if captures.count > 4, let a = Double(captures[4]) {
             alpha = a
-        } else {
-            alpha = 1
         }
 
         self.init(hue: h, saturation: s, lightness: l, alpha: alpha)
@@ -252,6 +246,28 @@ public struct Color {
     /// Same as `init?(hsl:)`.
     public init?(hsla s: String) {
         self.init(hsl: s)
+    }
+}
+
+extension Color {
+    public static func rgb(_ red: Int, _ green: Int, _ blue: Int, _ alpha: Double = 1) -> Color {
+        return Color(red: red, green: green, blue: blue, alpha: alpha)
+    }
+
+    public static func hsl(_ hue: Int, _ saturation: Int, _ lightness: Int, alpha: Double = 1) -> Color {
+        return Color(hue: hue, saturation: saturation, lightness: lightness, alpha: alpha)
+    }
+
+    public static func hsv(_ hue: Int, _ saturation: Int, _ value: Int, alpha: Double = 1) -> Color {
+        return Color(hue: hue, saturation: saturation, value: value, alpha: alpha)
+    }
+
+    public static func hex(_ s: String) -> Color? {
+        return Color(hex: s)
+    }
+
+    public static func hex(_ n: Int) -> Color {
+        return Color(hex: n)
     }
 }
 
