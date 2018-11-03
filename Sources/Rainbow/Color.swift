@@ -401,7 +401,7 @@ extension Color {
 // MARK: - Methods
 extension Color {
 
-    public func mixed(rgb color: Color) -> Color {
+    public func mixed(_ color: Color) -> Color {
         let a = self.a - color.a
         let w1 = (a + 1) / 2
         let w2 = 1 - w1
