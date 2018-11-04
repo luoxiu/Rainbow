@@ -1,12 +1,16 @@
 # Rainbow
 
+<div>
 <a href="https://travis-ci.org/jianstm/Rainbow">
   <img src="https://travis-ci.org/jianstm/Rainbow.svg?branch=master">
 </a>
-<br>
-<div align="center">
-    <strong>Color conversion and manipulation library for Swift, with no dependence on UIKit/AppKit.</strong>
+<a href="https://github.com/jianstm/Rainbow/releases">
+  <img src="https://img.shields.io/github/tag/jianstm/Rainbow.svg">
+</a>
+<img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
+<img src="https://img.shields.io/github/license/jianstm/Rainbow.svg">
 </div>
+Color conversion and manipulation library for Swift, with no dependence on UIKit/AppKit.
 
 ## API
 
@@ -78,10 +82,15 @@ dependencies: [
 ]
 ```
 
-## Contribute
-
-If you want to add new features, feel free to submit a pull request. Any contributing is welcome at all times!
-
 ## Acknowledge
 
 Inspired by the awesome javascript library [color](https://github.com/Qix-/color).
+
+## Related
+
+- [Crayon](https://github.com/jianstm/Crayon) - 🖍 Expressive styling on terminal string.
+
+## Contribute
+
+If you find a bug, open an issue, if you want to add new features, feel free to submit a pull request. Any contributing is welcome at all times!
+
