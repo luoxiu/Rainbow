@@ -64,6 +64,14 @@ final class RainbowTests: XCTestCase {
         XCTAssert(color == other!)
     }
 
+    func testConversionEdgeCases() {
+        let rgbInit = Color(red: 255, green: 255, blue: 255) // edge case: what hue does white/grey/black have? --> define as 0
+        let hsla = rgbInit.hsla // this shouldn't fail
+        XCTAssert(hsla.hue == 0)
+        XCTAssert(hsla.saturation == 0)
+        XCTAssert(hsla.lightness == 100)
+    }
+
     func testHexColor() {
         let color1 = Color(hex: "abcf")
         let color2 = Color(hex: "#AABBCC")
@@ -94,6 +102,7 @@ final class RainbowTests: XCTestCase {
     static var allTests = [
         ("testRGBAColor", testRGBAColor),
         ("testHSLAColor", testHSLAColor),
-        ("testHSVAColor", testHSVAColor)
+        ("testHSVAColor", testHSVAColor),
+        ("testConversionEdgeCases", testConversionEdgeCases)
     ]
 }

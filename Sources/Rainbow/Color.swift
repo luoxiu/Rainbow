@@ -319,27 +319,36 @@ extension Color {
     public var hsla: (hue: Int, saturation: Int, lightness: Int, alpha: Double) {
         let max = Swift.max(r, g, b)
         let min = Swift.min(r, g, b)
-
-        let d = max - min
-
-        let l = (max + min) / 2
-        var h = 0.0
+        
+        // calc lightness
+        let l = (max + min) / 2.0
+        
+        // calc saturation
         var s = 0.0
 
-        if r == max {
-            h = (g - b) / d
+        if (max == min) {
+            s = 0.0
+        } else if (l < 0.5) {
+            s = (max - min) / (max + min)
+        } else if (l >= 0.5) {
+            s = (max - min) / (2.0 - max - min)
+        }
+        
+        // calc hue
+        var h = 0.0
+        // if saturation is 0, hue is undefined, set to 0
+        if s == 0.0 {
+            h = 0.0
+        } else if r == max {
+            h = (g - b) / (max - min)
         } else if g == max {
-            h = 2 + (b - r) / d
+            h = 2 + (b - r) / (max - min)
         } else if b == max {
-            h = 4 + (r - g) / d
+            h = 4 + (r - g) / (max - min)
         }
 
         h = Swift.min(h * 60, 360)
         if h < 0 { h += 360 }
-
-        if d != 0 {
-            s = l <= 0.5 ? d / (max + min) : d / (2 - max - min)
-        }
 
         return (hue: Int(h), saturation: Int(s * 100), lightness: Int(l * 100), alpha: a)
     }
