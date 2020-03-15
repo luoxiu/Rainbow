@@ -434,22 +434,7 @@ extension Color {
 
 
 // MARK: - Hashable & Equatable
-extension Color: Hashable {
-
-    public var hashValue: Int {
-        var hasher = Hasher()
-        r.hash(into: &hasher)
-        g.hash(into: &hasher)
-        b.hash(into: &hasher)
-        a.hash(into: &hasher)
-        return hasher.finalize()
-    }
-
-    /// Returns a Boolean value that indicates whether two colors are the same.
-    public static func == (lhs: Color, rhs: Color) -> Bool {
-        return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a
-    }
-}
+extension Color: Hashable { }
 
 // MARK: - Misc
 extension Color {
