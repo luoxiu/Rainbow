@@ -1,14 +1,14 @@
 # Rainbow
 
 <p>
-<a href="https://travis-ci.org/louxiu/Rainbow">
-  <img src="https://travis-ci.org/louxiu/Rainbow.svg?branch=master">
+<a href="https://travis-ci.org/luoxiu/Rainbow">
+  <img src="https://travis-ci.org/luoxiu/Rainbow.svg?branch=master">
 </a>
-<a href="https://github.com/louxiu/Rainbow/releases">
-  <img src="https://img.shields.io/github/tag/louxiu/Rainbow.svg">
+<a href="https://github.com/luoxiu/Rainbow/releases">
+  <img src="https://img.shields.io/github/tag/luoxiu/Rainbow.svg">
 </a>
 <img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
-<img src="https://img.shields.io/github/license/louxiu/Rainbow.svg">
+<img src="https://img.shields.io/github/license/luoxiu/Rainbow.svg">
 </p>
 <p>Color conversion and manipulation library for Swift, with no rely on UIKit/AppKit.</p>
 
@@ -89,7 +89,7 @@ color.random    // a random color
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/louxiu/Rainbow", from("0.0.1"))
+    .package(url: "https://github.com/luoxiu/Rainbow", from("0.0.1"))
 ]
 ```
 
@@ -99,7 +99,7 @@ Inspired by the awesome javascript library [color](https://github.com/Qix-/color
 
 ## Related
 
-- [Crayon](https://github.com/louxiu/Crayon) - 🖍 Expressive styling on terminal string.
+- [Crayon](https://github.com/luoxiu/Crayon) - 🖍 Expressive styling on terminal string.
 
 ## Contribute
 
