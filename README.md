@@ -4,7 +4,9 @@
 <a href="https://travis-ci.org/luoxiu/Rainbow">
   <img src="https://travis-ci.org/luoxiu/Rainbow.svg?branch=master">
 </a>
-<img src="https://img.shields.io/codecov/c/github/luoxiu/Rainbow.svg">
+<a href="https://codecov.io/gh/luoxiu/Rainbow">
+  <img src="https://codecov.io/gh/luoxiu/Rainbow/branch/master/graph/badge.svg" />
+</a>
 <a href="https://github.com/luoxiu/Rainbow/releases">
   <img src="https://img.shields.io/github/tag/luoxiu/Rainbow.svg">
 </a>
@@ -100,7 +102,7 @@ Inspired by the awesome javascript library [color](https://github.com/Qix-/color
 
 ## Related
 
-- [Crayon](https://github.com/luoxiu/Crayon) - 🖍 Expressive styling on terminal string.
+- [Chalk](https://github.com/luoxiu/Chalk) - 🖍 Expressive styling on terminal string.
 
 ## Contribute
 
