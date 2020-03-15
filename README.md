@@ -1,16 +1,32 @@
 # Rainbow
 
-<div>
-<a href="https://travis-ci.org/jianstm/Rainbow">
-  <img src="https://travis-ci.org/jianstm/Rainbow.svg?branch=master">
+<p>
+<a href="https://travis-ci.org/louxiu/Rainbow">
+  <img src="https://travis-ci.org/louxiu/Rainbow.svg?branch=master">
 </a>
-<a href="https://github.com/jianstm/Rainbow/releases">
-  <img src="https://img.shields.io/github/tag/jianstm/Rainbow.svg">
+<a href="https://github.com/louxiu/Rainbow/releases">
+  <img src="https://img.shields.io/github/tag/louxiu/Rainbow.svg">
 </a>
 <img src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-lightgrey.svg">
-<img src="https://img.shields.io/github/license/jianstm/Rainbow.svg">
-</div>
-Color conversion and manipulation library for Swift, with no dependence on UIKit/AppKit.
+<img src="https://img.shields.io/github/license/louxiu/Rainbow.svg">
+</p>
+<p>Color conversion and manipulation library for Swift, with no rely on UIKit/AppKit.</p>
+
+## Highlights
+
+- Full featured
+	- rgba
+	- hsla
+	- hsva
+	- hex
+	- ansi
+	- ...
+- No rely on UIKit/AppKit
+- Expressive API
+- Complete Documentation
+- Comprehensive Test Coverage
+- from&to UIColor&NSColor
+- Handpicked Color
 
 ## API
 
@@ -63,22 +79,17 @@ color.isWhite   // true or false
 color.isBlack   // true or false
 color.negate
 
+color.ansi16
+color.ansi256
+
 color.random    // a random color
-```
-
-###  methods
-
-```swift
-let c1 = Color(red: 50, green: 100, blue: 150, alpha: 1)
-let c2 = Color(red: 150, green: 200, blue: 250, alpha: 1)
-c1.mixed(c2)     // -> mixed color
 ```
 
 ## Install
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jianstm/Rainbow", .upToNextMajor(from: "0.0.1"))
+    .package(url: "https://github.com/louxiu/Rainbow", from("0.0.1"))
 ]
 ```
 
@@ -88,7 +99,7 @@ Inspired by the awesome javascript library [color](https://github.com/Qix-/color
 
 ## Related
 
-- [Crayon](https://github.com/jianstm/Crayon) - 🖍 Expressive styling on terminal string.
+- [Crayon](https://github.com/louxiu/Crayon) - 🖍 Expressive styling on terminal string.
 
 ## Contribute
 

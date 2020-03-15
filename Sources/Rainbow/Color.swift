@@ -2,12 +2,12 @@ import Foundation
 
 public struct Color {
 
-    private let r: Double
-    private let g: Double
-    private let b: Double
-    private let a: Double
+    let r: Double
+    let g: Double
+    let b: Double
+    let a: Double
 
-    private init(r: Double, g: Double, b: Double, a: Double) {
+    init(r: Double, g: Double, b: Double, a: Double) {
         self.r = r
         self.g = g
         self.b = b
@@ -15,7 +15,7 @@ public struct Color {
     }
 
     /// Creates a color using the specified opacity and RGB component values.
-    ///
+        ///
     ///     Color(red: 3, green: 102, blue: 214)
     ///     Color(red: 3, green: 102, blue: 214, alpha: 0.5)
     ///
@@ -254,11 +254,11 @@ extension Color {
         return Color(red: red, green: green, blue: blue, alpha: alpha)
     }
 
-    public static func hsl(_ hue: Int, _ saturation: Int, _ lightness: Int, alpha: Double = 1) -> Color {
+    public static func hsl(_ hue: Int, _ saturation: Int, _ lightness: Int, _ alpha: Double = 1) -> Color {
         return Color(hue: hue, saturation: saturation, lightness: lightness, alpha: alpha)
     }
 
-    public static func hsv(_ hue: Int, _ saturation: Int, _ value: Int, alpha: Double = 1) -> Color {
+    public static func hsv(_ hue: Int, _ saturation: Int, _ value: Int, _ alpha: Double = 1) -> Color {
         return Color(hue: hue, saturation: saturation, value: value, alpha: alpha)
     }
 
@@ -273,10 +273,6 @@ extension Color {
 
 // MARK: - Properties
 extension Color {
-
-    public var alpha: Double {
-        return a
-    }
 
     public var rgba: (red: Int, green: Int, blue: Int, alpha: Double) {
         return (red: Int(r * 255), green: Int(g * 255), blue: Int(b * 255), alpha: a)
@@ -365,15 +361,15 @@ extension Color {
 
     public var negate: Color {
         let rgba = self.rgba
-        return Color(red: 255 - rgba.red, green: 255 - rgba.green, blue: 255 - rgba.blue)
+        return Color(red: 255 - rgba.red, green: 255 - rgba.green, blue: 255 - rgba.blue, alpha: rgba.alpha)
     }
 
     public var isBlack: Bool {
-        return r > 0.91 && g > 0.91 && b > 0.91
+        return r < 0.09 && g < 0.09 && b < 0.09
     }
 
     public var isWhite: Bool {
-        return r < 0.09 && g < 0.09 && b < 0.09
+        return r > 0.91 && g > 0.91 && b > 0.91
     }
 
     /// Roughly
@@ -416,22 +412,6 @@ extension Color {
         return c
     }
 }
-
-// MARK: - Methods
-extension Color {
-
-    public func mixed(_ color: Color) -> Color {
-        let a = self.a - color.a
-        let w1 = (a + 1) / 2
-        let w2 = 1 - w1
-
-        return Color(r: w1 * r + w2 * color.r,
-                     g: w1 * g + w2 * color.g,
-                     b: w1 * b + w2 * color.b,
-                     a: (a + color.a) * 0.5)
-    }
-}
-
 
 // MARK: - Hashable & Equatable
 extension Color: Hashable { }
