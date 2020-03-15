@@ -4,6 +4,7 @@
 <a href="https://travis-ci.org/luoxiu/Rainbow">
   <img src="https://travis-ci.org/luoxiu/Rainbow.svg?branch=master">
 </a>
+<img src="https://img.shields.io/codecov/c/github/luoxiu/Rainbow.svg">
 <a href="https://github.com/luoxiu/Rainbow/releases">
   <img src="https://img.shields.io/github/tag/luoxiu/Rainbow.svg">
 </a>
