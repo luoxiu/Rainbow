@@ -29,7 +29,7 @@
 - Complete Documentation
 - Comprehensive Test Coverage
 - from&to UIColor&NSColor
-- Handpicked Color
+- Material & CSS Colors
 
 ## API
 
@@ -62,9 +62,10 @@ let color = Color.hsv(100, 20, 30)
 let color = Color.hex("#0a0b0c")
 let color = Color.hex(0x0366D6)
 
-let color = Color.aliceBlue		// more than 100 handpicked colors
-let color = Color.beige
-let color = Color.cadetBlue
+let color = Color.Material.red50
+let color = Color.Material.purple500
+let color = Color.CSS.navy
+let color = Color.CSS.tomato
 // ...
 ```
 
@@ -92,7 +93,7 @@ color.random    // a random color
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/luoxiu/Rainbow", from("0.0.1"))
+    .package(url: "https://github.com/luoxiu/Rainbow", from("0.1.0"))
 ]
 ```
 
