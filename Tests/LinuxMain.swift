@@ -3,5 +3,6 @@ import XCTest
 import RainbowTests
 
 var tests = [XCTestCaseEntry]()
-tests += RainbowTests.allTests()
+tests += RainbowTests.__allTests()
+
 XCTMain(tests)

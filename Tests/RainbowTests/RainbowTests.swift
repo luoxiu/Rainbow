@@ -122,16 +122,4 @@ final class RainbowTests: XCTestCase {
         XCTAssertEqual(Color.fromUIColor(c.toUIColor()), c)
         #endif
     }
-
-    static var allTests = [
-        ("testRGBAColor", testRGBAColor),
-        ("testHSLAColor", testHSLAColor),
-        ("testHSVAColor", testHSVAColor),
-        ("testConversionEdgeCases", testConversionEdgeCases),
-        ("testHexColor", testHexColor),
-        ("testANSI", testANSI),
-        ("testDarkLight", testDarkLight),
-        ("testNegate", testNegate),
-        ("testCocoa", testCocoa)
-    ]
 }
