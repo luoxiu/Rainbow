@@ -1,11 +1,8 @@
 # Rainbow
 
 <p>
-<a href="https://travis-ci.org/luoxiu/Rainbow">
-  <img src="https://travis-ci.org/luoxiu/Rainbow.svg?branch=master">
-</a>
-<a href="https://codecov.io/gh/luoxiu/Rainbow">
-  <img src="https://codecov.io/gh/luoxiu/Rainbow/branch/master/graph/badge.svg" />
+<a href="https://github.com/luoxiu/Rainbow/actions">
+  <img src="https://github.com/luoxiu/Rainbow/workflows/swift/badge.svg">
 </a>
 <a href="https://github.com/luoxiu/Rainbow/releases">
   <img src="https://img.shields.io/github/tag/luoxiu/Rainbow.svg">
