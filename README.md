@@ -2,7 +2,7 @@
 
 <p>
 <a href="https://github.com/luoxiu/Rainbow/actions">
-  <img src="https://github.com/luoxiu/Rainbow/workflows/swift/badge.svg">
+  <img src="https://github.com/luoxiu/Rainbow/workflows/Swift/badge.svg">
 </a>
 <a href="https://github.com/luoxiu/Rainbow/releases">
   <img src="https://img.shields.io/github/tag/luoxiu/Rainbow.svg">
