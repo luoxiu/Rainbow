@@ -97,6 +97,10 @@ dependencies: [
 ]
 ```
 
+```ruby
+pod 'RainbowPod', '~> 0.1.0'
+```
+
 ## Acknowledge
 
 Inspired by the awesome javascript library [color](https://github.com/Qix-/color).
